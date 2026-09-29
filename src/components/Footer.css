@@ -10,6 +10,7 @@
   padding: 56px 0;
 }
 
+/* ===== BRAND ===== */
 .footer-logo {
   display: inline-block;
   margin-bottom: 12px;
@@ -21,27 +22,34 @@
   color: var(--accent);
 }
 
-.footer p,
+/* only the brand description, not every paragraph in the footer */
+.footer-brand p {
+  max-width: 320px;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
 .footer address {
   color: var(--text-muted);
   font-size: 0.95rem;
   font-style: normal;
-  max-width: 320px;
 }
 
+/* ===== COLUMN TITLES ===== */
 .footer-title {
   margin-bottom: 16px;
   font-family: var(--font-body);
   font-size: 0.85rem;
-  text-transform: uppercase;
   letter-spacing: 2px;
+  text-transform: uppercase;
   color: var(--accent);
 }
 
+/* ===== LISTS ===== */
 .footer ul {
-  list-style: none;
   display: grid;
   gap: 8px;
+  list-style: none;
   color: var(--text-muted);
   font-size: 0.95rem;
 }
@@ -54,12 +62,15 @@
   padding-left: 4px;
 }
 
+/* ===== BOTTOM BAR (centred) ===== */
 .footer-bottom {
-  border-top: 1px solid var(--border);
   padding: 20px 16px;
+  border-top: 1px solid var(--border);
   text-align: center;
-  font-size: 0.85rem;
+}
+.footer-bottom p {
   color: var(--text-muted);
+  font-size: 0.85rem;
 }
 
 /* ===== RESPONSIVE ===== */

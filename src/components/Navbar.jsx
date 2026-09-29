@@ -1,13 +1,24 @@
 import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import "./Navbar.css";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { totalItems } = useCart();
+  const { pathname, hash } = useLocation();
+
+  const isAboutActive = pathname === "/" && hash === "#about";
 
   const closeMenu = () => setMenuOpen(false);
+
+  // If we're already on /#about, clicking About again should still scroll there
+  function handleAboutClick() {
+    closeMenu();
+    if (pathname === "/") {
+      document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
+    }
+  }
 
   return (
     <header className="navbar">
@@ -19,13 +30,33 @@ function Navbar() {
 
         <ul className={`nav-links ${menuOpen ? "open" : ""}`}>
           <li>
-            <NavLink to="/" end onClick={closeMenu}>Home</NavLink>
+            <NavLink
+              to="/"
+              end
+              onClick={closeMenu}
+              className={({ isActive }) => (isActive && !isAboutActive ? "active" : "")}
+            >
+              Home
+            </NavLink>
           </li>
           <li>
-            <NavLink to="/menu" onClick={closeMenu}>Menu</NavLink>
+            <NavLink to="/menu" onClick={closeMenu}>
+              Menu
+            </NavLink>
           </li>
           <li>
-            <NavLink to="/cart" onClick={closeMenu}>Cart</NavLink>
+            <Link
+              to="/#about"
+              onClick={handleAboutClick}
+              className={isAboutActive ? "active" : ""}
+            >
+              About
+            </Link>
+          </li>
+          <li>
+            <NavLink to="/cart" onClick={closeMenu}>
+              Cart
+            </NavLink>
           </li>
         </ul>
 
@@ -50,7 +81,7 @@ function Navbar() {
             )}
           </Link>
 
-          <Link to="/menu" className="btn btn-primary nav-cta">
+          <Link to="/menu" className="btn btn-primary nav-cta" onClick={closeMenu}>
             Order Now
           </Link>
 

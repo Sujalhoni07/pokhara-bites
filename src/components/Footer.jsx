@@ -20,8 +20,8 @@ function Footer() {
         <div>
           <h2 className="footer-title">Opening Hours</h2>
           <ul>
-            <li>Sun – Fri: 7:00 AM – 9:00 PM</li>
-            <li>Saturday: 8:00 AM – 10:00 PM</li>
+            <li>Sun – Fri: 7 AM – 9 PM</li>
+            <li>Sat: 8 AM – 10 PM</li>
           </ul>
         </div>
 
@@ -39,6 +39,7 @@ function Footer() {
           <ul>
             <li><Link to="/">Home</Link></li>
             <li><Link to="/menu">Menu</Link></li>
+            <li><Link to="/#about">About Us</Link></li>
             <li><Link to="/cart">Cart</Link></li>
           </ul>
         </div>
