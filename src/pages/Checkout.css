@@ -142,9 +142,7 @@
   font-size: 0.85rem;
   animation: errorIn 0.25s ease;
 }
-.field-error::before {
-  content: "⚠ ";
-}
+
 .field-hint {
   color: var(--text-muted);
   font-size: 0.8rem;
@@ -245,8 +243,9 @@
 }
 
 .option-icon {
-  margin-bottom: 4px;
-  font-size: 1.6rem;
+  display: flex;
+  margin-bottom: 6px;
+  color: var(--accent);
 }
 .option-title {
   font-weight: 600;
@@ -453,4 +452,9 @@
   .checkout-steps li:not(:last-child)::after {
     width: 16px;
   }
+}
+.payment-note svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: #5fbf7f;
 }

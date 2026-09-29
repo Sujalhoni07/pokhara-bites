@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import FoodCard from "../components/FoodCard";
 import { useCart } from "../context/CartContext";
 import "./Menu.css";
+import { WifiOff, SearchX } from "lucide-react";
 
 /* ===== HELPER: sort a copy of the list ===== */
 function sortItems(items, sortBy) {
@@ -102,7 +103,9 @@ function Menu() {
   }
 
   /* ----- decide what to show ----- */
-  function renderContent() {
+  
+   
+      function renderContent() {
     if (loading) {
       return (
         <div className="menu-status">
@@ -115,7 +118,10 @@ function Menu() {
     if (error) {
       return (
         <div className="menu-status">
-          <p className="status-title">😕 {error}</p>
+          <span className="status-icon" aria-hidden="true">
+            <WifiOff size={30} strokeWidth={1.75} />
+          </span>
+          <p className="status-title">{error}</p>
           <button
             className="btn btn-primary"
             onClick={() => setReloadKey((key) => key + 1)}
@@ -129,6 +135,9 @@ function Menu() {
     if (filteredItems.length === 0) {
       return (
         <div className="menu-status">
+          <span className="status-icon" aria-hidden="true">
+            <SearchX size={30} strokeWidth={1.75} />
+          </span>
           <p className="status-title">
             No dishes found{query && ` for "${search.trim()}"`}
           </p>

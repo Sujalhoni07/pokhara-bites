@@ -37,6 +37,9 @@
   position: absolute;
   top: 12px;
   left: 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
   padding: 5px 12px;
   border: 1px solid rgba(232, 169, 72, 0.4);
   border-radius: 999px;
@@ -147,4 +150,10 @@
   .food-card {
     animation: none;
   }
+}
+.spicy {
+  display: flex;
+  flex-shrink: 0;
+  margin-top: 3px;
+  color: #e0703a;
 }

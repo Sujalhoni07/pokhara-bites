@@ -123,6 +123,9 @@
   margin-top: 20px;
 }
 .continue-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   color: var(--text-muted);
   font-weight: 500;
   transition: color var(--transition);
@@ -216,8 +219,11 @@
   text-align: center;
 }
 .summary-note {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
   margin-top: 14px;
-  text-align: center;
   color: var(--text-muted);
   font-size: 0.85rem;
 }
@@ -239,8 +245,9 @@
   place-items: center;
   width: 120px;
   height: 120px;
-  font-size: 3.5rem;
+  color: var(--accent);
   background: rgba(232, 169, 72, 0.1);
+  border: 1px solid rgba(232, 169, 72, 0.25);
   border-radius: 50%;
   animation: float 3s ease-in-out infinite;
 }
@@ -290,4 +297,13 @@
   .qty-control     { grid-area: qty; justify-self: start; }
   .cart-item-total { grid-area: total; }
   .remove-btn      { grid-area: remove; justify-self: end; }
+}
+.delivery-progress p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.delivery-progress svg {
+  flex-shrink: 0;
+  color: var(--accent);
 }

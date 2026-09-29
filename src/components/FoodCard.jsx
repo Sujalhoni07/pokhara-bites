@@ -1,13 +1,14 @@
 import { useState } from "react";
+import { Flame, Star } from "lucide-react";
 import "./FoodCard.css";
 
 function FoodCard({ item, onAddToCart }) {
   const [added, setAdded] = useState(false);
 
   function handleAdd() {
-    onAddToCart(item);          // tell the parent (Menu page)
-    setAdded(true);             // show "Added ✓"
-    setTimeout(() => setAdded(false), 1200); // back to "+ Add" after 1.2s
+    onAddToCart(item);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1200);
   }
 
   return (
@@ -15,7 +16,12 @@ function FoodCard({ item, onAddToCart }) {
       <div className="food-image">
         <img src={item.image} alt={item.name} loading="lazy" />
 
-        {item.isPopular && <span className="badge-popular">★ Popular</span>}
+        {item.isPopular && (
+          <span className="badge-popular">
+            <Star size={12} fill="currentColor" aria-hidden="true" />
+            Popular
+          </span>
+        )}
 
         <span
           className={`veg-mark ${item.isVeg ? "veg" : "non-veg"}`}
@@ -31,7 +37,10 @@ function FoodCard({ item, onAddToCart }) {
         <div className="food-title-row">
           <h3>{item.name}</h3>
           {item.isSpicy && (
-            <span className="spicy" role="img" aria-label="Spicy">🌶️</span>
+            <span className="spicy" title="Spicy">
+              <Flame size={18} aria-hidden="true" />
+              <span className="sr-only">Spicy</span>
+            </span>
           )}
         </div>
 

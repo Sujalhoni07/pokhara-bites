@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
+import { Leaf, Bike, Mountain, Wifi } from "lucide-react";
 import "./Home.css";
 
 /* ===== DATA ===== */
 const features = [
-  { icon: "🌿", title: "Fresh & Local", text: "Vegetables and meat from local farms around Pokhara." },
-  { icon: "🛵", title: "Fast Delivery", text: "Hot food at your door in about 30 minutes in Lakeside." },
-  { icon: "🏞️", title: "Lake View Seating", text: "Relax with a view of Phewa Lake and the mountains." },
-  { icon: "📶", title: "Free Wi-Fi", text: "A calm corner to work, study or meet friends." },
+  { Icon: Leaf, title: "Fresh & Local", text: "Vegetables and meat from local farms around Pokhara." },
+  { Icon: Bike, title: "Fast Delivery", text: "Hot food at your door in about 30 minutes in Lakeside." },
+  { Icon: Mountain, title: "Lake View Seating", text: "Relax with a view of Phewa Lake and the mountains." },
+  { Icon: Wifi, title: "Free Wi-Fi", text: "A calm corner to work, study or meet friends." },
 ];
 
 const featuredDishes = [
@@ -85,11 +86,13 @@ function Home() {
           </div>
 
           <div className="feature-grid">
-            {features.map((feature) => (
-              <div key={feature.title} className="feature-card">
-                <span className="feature-icon" aria-hidden="true">{feature.icon}</span>
-                <h3>{feature.title}</h3>
-                <p>{feature.text}</p>
+            {features.map(({ Icon, title, text }) => (
+              <div key={title} className="feature-card">
+                <span className="feature-icon" aria-hidden="true">
+                  <Icon size={26} strokeWidth={1.75} />
+                </span>
+                <h3>{title}</h3>
+                <p>{text}</p>
               </div>
             ))}
           </div>

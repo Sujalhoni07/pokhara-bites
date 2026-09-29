@@ -41,7 +41,7 @@ function OrderSuccess() {
 
         <h1>Thank You for Your Order!</h1>
         <p className="success-lead">
-          Dhanyabad, {firstName}! 🙏 We've received your order and the kitchen
+          Dhanyabad, {firstName}! We've received your order and the kitchen
           is getting started.
         </p>
 

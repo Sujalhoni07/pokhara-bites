@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useCart, FREE_DELIVERY_MIN, DELIVERY_FEE } from "../context/CartContext";
 import { formatPrice } from "../utils/formatPrice";
 import "./Checkout.css";
+import { Bike, Store, Banknote } from "lucide-react";
 
 /* ===== VALIDATION RULES ===== */
 const PHONE_PATTERN = /^(98|97)\d{8}$/; // 10 digits, starting with 98 or 97
@@ -66,10 +67,10 @@ function Checkout() {
   const deliveryFee = isDelivery && subtotal < FREE_DELIVERY_MIN ? DELIVERY_FEE : 0;
   const total = subtotal + vat + deliveryFee;
 
-  const orderOptions = [
+    const orderOptions = [
     {
       value: "delivery",
-      icon: "🛵",
+      icon: <Bike size={26} strokeWidth={1.75} />,
       title: "Delivery",
       text: subtotal >= FREE_DELIVERY_MIN
         ? "Free · 30–40 min"
@@ -77,7 +78,7 @@ function Checkout() {
     },
     {
       value: "pickup",
-      icon: "🏪",
+      icon: <Store size={26} strokeWidth={1.75} />,
       title: "Pickup",
       text: "Free · ready in 20 min",
     },
@@ -291,7 +292,7 @@ function Checkout() {
 
             {/* Payment info */}
             <div className="payment-note">
-              <span aria-hidden="true">💵</span>
+               <Banknote size={20} aria-hidden="true" />
               <p>
                 <strong>{isDelivery ? "Cash on delivery" : "Pay at the counter"}</strong>
                 <br />

@@ -1,5 +1,15 @@
 import { Link } from "react-router-dom";
 import {
+  ShoppingBag,
+  Truck,
+  Gift,
+  Banknote,
+  Minus,
+  Plus,
+  Trash2,
+  ArrowLeft,
+} from "lucide-react";
+import {
   useCart,
   FREE_DELIVERY_MIN,
   MAX_QUANTITY,
@@ -25,7 +35,9 @@ function Cart() {
     return (
       <section className="page">
         <div className="container cart-empty">
-          <span className="empty-icon" aria-hidden="true">🛒</span>
+          <span className="empty-icon" aria-hidden="true">
+            <ShoppingBag size={48} strokeWidth={1.5} />
+          </span>
           <h1>Your Cart</h1>
           <p>Your cart is empty. Let's fix that!</p>
           <Link to="/menu" className="btn btn-primary">
@@ -77,7 +89,7 @@ function Cart() {
                       disabled={item.quantity === 1}
                       aria-label={`Decrease quantity of ${item.name}`}
                     >
-                      −
+                      <Minus size={16} aria-hidden="true" />
                     </button>
                     <span aria-live="polite">{item.quantity}</span>
                     <button
@@ -85,7 +97,7 @@ function Cart() {
                       disabled={item.quantity >= MAX_QUANTITY}
                       aria-label={`Increase quantity of ${item.name}`}
                     >
-                      +
+                      <Plus size={16} aria-hidden="true" />
                     </button>
                   </div>
 
@@ -98,14 +110,7 @@ function Cart() {
                     onClick={() => removeFromCart(item.id)}
                     aria-label={`Remove ${item.name} from cart`}
                   >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                      stroke="currentColor" strokeWidth="2" strokeLinecap="round"
-                      strokeLinejoin="round" aria-hidden="true">
-                      <polyline points="3 6 5 6 21 6" />
-                      <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
-                      <path d="M10 11v6M14 11v6" />
-                      <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
-                    </svg>
+                    <Trash2 size={18} aria-hidden="true" />
                   </button>
                 </li>
               ))}
@@ -113,7 +118,8 @@ function Cart() {
 
             <div className="cart-actions">
               <Link to="/menu" className="continue-link">
-                ← Continue shopping
+                <ArrowLeft size={16} aria-hidden="true" />
+                Continue shopping
               </Link>
               <button className="clear-cart-btn" onClick={handleClear}>
                 Clear cart
@@ -128,10 +134,18 @@ function Cart() {
             <div className="delivery-progress">
               {remaining > 0 ? (
                 <p>
-                  Add <strong>{formatPrice(remaining)}</strong> more for free delivery 🛵
+                  <Truck size={16} aria-hidden="true" />
+                  <span>
+                    Add <strong>{formatPrice(remaining)}</strong> more for free delivery
+                  </span>
                 </p>
               ) : (
-                <p>🎉 You've unlocked <strong>free delivery!</strong></p>
+                <p>
+                  <Gift size={16} aria-hidden="true" />
+                  <span>
+                    You've unlocked <strong>free delivery!</strong>
+                  </span>
+                </p>
               )}
               <div className="progress">
                 <div className="progress-bar" style={{ width: `${progress}%` }}></div>
@@ -160,7 +174,10 @@ function Cart() {
             <Link to="/checkout" className="btn btn-primary checkout-btn">
               Proceed to Checkout
             </Link>
-            <p className="summary-note">💵 Cash on delivery available</p>
+            <p className="summary-note">
+              <Banknote size={16} aria-hidden="true" />
+              Cash on delivery available
+            </p>
           </aside>
         </div>
       </div>
