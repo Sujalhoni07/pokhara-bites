@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import FoodCard from "../components/FoodCard";
+import { useCart } from "../context/CartContext";
 import "./Menu.css";
 
 /* ===== HELPER: sort a copy of the list ===== */
@@ -21,6 +22,9 @@ function sortItems(items, sortBy) {
 }
 
 function Menu() {
+  /* ----- cart ----- */
+  const { addToCart } = useCart();
+
   /* ----- data from the "server" ----- */
   const [menuItems, setMenuItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -94,7 +98,7 @@ function Menu() {
   }
 
   function handleAddToCart(item) {
-    console.log("Added to cart:", item.name); // Step 6: connect to the real cart
+    addToCart(item);
   }
 
   /* ----- decide what to show ----- */
@@ -170,9 +174,17 @@ function Menu() {
             <label htmlFor="menu-search" className="sr-only">
               Search dishes
             </label>
-            <svg className="search-icon" width="18" height="18" viewBox="0 0 24 24"
-              fill="none" stroke="currentColor" strokeWidth="2"
-              strokeLinecap="round" aria-hidden="true">
+            <svg
+              className="search-icon"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              aria-hidden="true"
+            >
               <circle cx="11" cy="11" r="7" />
               <line x1="21" y1="21" x2="16.65" y2="16.65" />
             </svg>

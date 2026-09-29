@@ -1,18 +1,19 @@
 import { Routes, Route } from "react-router-dom";
+import ScrollToTop from "./components/ScrollToTop";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Menu from "./pages/Menu";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import OrderSuccess from "./pages/OrderSuccess";
 import NotFound from "./pages/NotFound";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   return (
     <>
-      {/* Navbar comes here in Step 3 */}
+      <ScrollToTop />
+      <Navbar />
 
       <main>
         <Routes>
@@ -25,19 +26,7 @@ function App() {
         </Routes>
       </main>
 
-      {  <>
-      <ScrollToTop />
-      <Navbar />
-       
-
-      <main>
-        <Routes>
-          {/* ...your routes stay the same... */}
-        </Routes>
-      </main>
-
       <Footer />
-    </>}
     </>
   );
 }

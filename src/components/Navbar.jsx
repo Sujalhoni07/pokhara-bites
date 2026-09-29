@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { useCart } from "../context/CartContext";
 import "./Navbar.css";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const cartCount = 0; // Step 5: this will come from the cart (Context API)
+  const { totalItems } = useCart();
 
   const closeMenu = () => setMenuOpen(false);
 
@@ -32,7 +33,7 @@ function Navbar() {
           <Link
             to="/cart"
             className="cart-link"
-            aria-label={`Cart with ${cartCount} items`}
+            aria-label={`Cart with ${totalItems} items`}
             onClick={closeMenu}
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -42,7 +43,11 @@ function Navbar() {
               <line x1="3" y1="6" x2="21" y2="6" />
               <path d="M16 10a4 4 0 0 1-8 0" />
             </svg>
-            {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
+            {totalItems > 0 && (
+              <span key={totalItems} className="cart-badge">
+                {totalItems}
+              </span>
+            )}
           </Link>
 
           <Link to="/menu" className="btn btn-primary nav-cta">
