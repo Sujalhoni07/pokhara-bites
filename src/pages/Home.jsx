@@ -1,5 +1,13 @@
 import { Link } from "react-router-dom";
-import { Leaf, Bike, Mountain, Wifi } from "lucide-react";
+import {
+  Leaf,
+  Bike,
+  Mountain,
+  Wifi,
+  ChevronDown,
+  Check,
+  Coffee,
+} from "lucide-react";
 import "./Home.css";
 
 /* ===== DATA ===== */
@@ -15,6 +23,12 @@ const featuredDishes = [
   { id: 2, name: "Thakali Set", description: "Rice, dal, gundruk, pickle and curry. The full Himalayan plate.", price: 550, image: "/images/thakali.jpg" },
   { id: 3, name: "Café Latte", description: "Smooth espresso with silky steamed milk.", price: 220, image: "/images/coffee.jpg" },
   { id: 4, name: "Chocolate Cake", description: "Rich and moist, baked fresh every morning.", price: 280, image: "/images/cake.jpg" },
+];
+
+const aboutPoints = [
+  "Traditional Nepali recipes",
+  "Freshly roasted Nepali coffee",
+  "Friendly local team",
 ];
 
 /* ===== HELPER: is the café open right now? ===== */
@@ -39,7 +53,7 @@ function Home() {
 
   return (
     <>
-      {/* 1. HERO */}
+      {/* 1. HERO (full screen) */}
       <section className="hero">
         <div className="hero-inner container">
           <div className="hero-content">
@@ -67,7 +81,7 @@ function Home() {
           <div className="hero-image">
             <img
               src="/images/hero.jpg"
-              alt="Warmly lit café counter with a glowing CAFE sign"
+              alt="Warm, cozy café interior with hanging lights and wooden shelves"
             />
             <div className={`status-badge ${isOpen ? "open" : "closed"}`}>
               <span className="dot" aria-hidden="true"></span>
@@ -75,10 +89,14 @@ function Home() {
             </div>
           </div>
         </div>
+
+        <a href="#features" className="scroll-hint" aria-label="Scroll to learn more">
+          <ChevronDown size={22} aria-hidden="true" />
+        </a>
       </section>
 
       {/* 2. WHY US */}
-      <section className="section">
+      <section id="features" className="section">
         <div className="container">
           <div className="section-header">
             <p className="eyebrow">Why Pokhara Bites</p>
@@ -140,23 +158,37 @@ function Home() {
           <div className="about-image">
             <img
               src="/images/cafe.jpg"
-              alt="Cozy café interior with warm lights"
+              alt="Café counter with a glowing CAFE sign and menu board"
               loading="lazy"
             />
+            <div className="about-badge">
+              <span className="about-badge-icon" aria-hidden="true">
+                <Coffee size={20} strokeWidth={2} />
+              </span>
+              <div>
+                <strong>Nepali Coffee</strong>
+                <small>Freshly roasted every week</small>
+              </div>
+            </div>
           </div>
 
           <div className="about-content">
             <p className="eyebrow">Our Story</p>
             <h2>A cozy corner by Phewa Lake</h2>
-            <p>
+            <p className="about-text">
               Pokhara Bites started with a simple idea: serve honest, homemade
               food in a place that feels warm. Travelers, students and families
               come here to eat well, slow down and enjoy the lake breeze.
             </p>
             <ul className="about-list">
-              <li>Traditional Nepali recipes</li>
-              <li>Freshly roasted Nepali coffee</li>
-              <li>Friendly local team</li>
+              {aboutPoints.map((point) => (
+                <li key={point}>
+                  <span className="check-icon" aria-hidden="true">
+                    <Check size={14} strokeWidth={3} />
+                  </span>
+                  {point}
+                </li>
+              ))}
             </ul>
             <Link to="/menu" className="btn btn-primary">Explore the Menu</Link>
           </div>
