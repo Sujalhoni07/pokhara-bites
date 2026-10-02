@@ -1,18 +1,18 @@
 /* ========== DESIGN TOKENS (colours, fonts, sizes) ========== */
 :root {
-  --bg: var(--color-bg);
-  --surface: var(--color-surface);
-  --surface-2: var(--color-surface-2);
-  --border: var(--color-line);
-  --text: var(--color-cream);
-  --text-muted: var(--color-muted);
-  --accent: var(--color-accent);
-  --accent-hover: var(--color-accent-hover);
-  --green: var(--color-leaf);
+  --bg: #121110;
+  --surface: #1c1a17;
+  --surface-2: #26231f;
+  --border: #36312a;
+  --text: #f3ece0;
+  --text-muted: #b3a894;
+  --accent: #e8a948;
+  --accent-hover: #f5bf62;
+  --green: #4a6b57;
   --danger: #d9534f;
 
-  --font-heading: var(--font-heading);
-  --font-body: var(--font-body);
+  --font-heading: "Playfair Display", Georgia, serif;
+  --font-body: "Inter", system-ui, sans-serif;
 
   --radius: 14px;
   --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
@@ -2331,21 +2331,194 @@ textarea {
     padding: 22px;
   }
 }
+/* ========== DISH DETAILS PAGE ========== */
+.dish-page {
+  max-width: 1100px;
+}
 
-@import "tailwindcss";
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 32px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  transition: color var(--transition);
+}
+.back-link:hover {
+  color: var(--accent);
+}
 
-/* ===== OUR CAFÉ THEME (makes Tailwind use our colours) ===== */
-@theme {
-  --color-bg: #121110;
-  --color-surface: #1c1a17;
-  --color-surface-2: #26231f;
-  --color-line: #36312a;
-  --color-cream: #f3ece0;
-  --color-muted: #b3a894;
-  --color-accent: #e8a948;
-  --color-accent-hover: #f5bf62;
-  --color-leaf: #4a6b57;
+.dish-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
 
-  --font-heading: "Playfair Display", Georgia, serif;
-  --font-body: "Inter", system-ui, sans-serif;
+.dish-photo {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+}
+
+.dish-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.dish-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--accent);
+}
+
+.dish-title-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.dish-title-row .veg-mark {
+  position: static;
+  flex-shrink: 0;
+  margin-top: 10px;
+}
+
+.dish-description {
+  margin-bottom: 28px;
+  color: var(--text-muted);
+}
+
+.fact-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.fact-card {
+  padding: 16px 10px;
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  transition: border-color var(--transition), transform var(--transition);
+}
+.fact-card:hover {
+  border-color: rgba(232, 169, 72, 0.5);
+  transform: translateY(-3px);
+}
+.fact-card svg {
+  margin-bottom: 8px;
+  color: var(--accent);
+}
+.fact-label {
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.fact-value {
+  font-weight: 600;
+}
+
+.dish-buy {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+.dish-price {
+  font-family: var(--font-heading);
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+.btn.dish-add.added {
+  background: var(--green);
+  color: #fff;
+}
+
+.dish-bottom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  margin-top: 56px;
+}
+.dish-bottom h2 {
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+.ingredient-list {
+  display: grid;
+  gap: 12px;
+  list-style: none;
+  color: var(--text-muted);
+}
+.ingredient-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.ingredient-list li::before {
+  content: "";
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  margin-top: 9px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+.step-list {
+  display: grid;
+  gap: 20px;
+  list-style: none;
+  color: var(--text-muted);
+}
+.step-list li {
+  display: flex;
+  gap: 16px;
+}
+.step-number {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  background: rgba(232, 169, 72, 0.15);
+  border-radius: 50%;
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.food-card .food-image {
+  display: block;
+}
+
+@media (max-width: 900px) {
+  .dish-top,
+  .dish-bottom {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .dish-photo {
+    height: 320px;
+  }
+}
+@media (max-width: 560px) {
+  .fact-grid {
+    grid-template-columns: 1fr 1fr;
+  }
 }

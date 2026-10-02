@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Star } from "lucide-react";
 import { formatPrice } from "../utils/formatPrice";
-
+import { Link } from "react-router-dom";
 
 function FoodCard({ item, onAddToCart }) {
   const [added, setAdded] = useState(false);
@@ -14,7 +14,7 @@ function FoodCard({ item, onAddToCart }) {
 
   return (
     <article className="food-card">
-      <div className="food-image">
+      <Link to={`/menu/${item.id}`} className="food-image"> 
         <img src={item.image} alt={item.name} loading="lazy" />
 
         {item.isPopular && (
@@ -33,7 +33,7 @@ function FoodCard({ item, onAddToCart }) {
             {item.isVeg ? "Vegetarian" : "Non-vegetarian"}
           </span>
         </span>
-      </div>
+      </Link>
 
       <div className="food-body">
         <p className="food-meta">

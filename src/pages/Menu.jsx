@@ -4,10 +4,11 @@ import FoodCard from "../components/FoodCard";
 import { useCart } from "../context/CartContext";
 
 
+
 // Real API with café dishes (limit=0 gives all dishes)
 const API_URL = "https://dummyjson.com/recipes?limit=0";
 // Our own dishes with our own photos, shown together with the API dishes
-const OUR_DISHES = [
+export const OUR_DISHES = [
   { id: 101, name: "Chicken Momo", description: "Juicy steamed chicken dumplings with spicy tomato achar.", category: "Nepali Specials", cuisine: "Nepali", price: 250, image: "/images/momo.jpg", rating: 4.9, isPopular: true, isVeg: false },
   { id: 102, name: "Thakali Set", description: "Rice, dal, gundruk, pickle and chicken curry.", category: "Nepali Specials", cuisine: "Nepali", price: 550, image: "/images/thakali.jpg", rating: 4.8, isPopular: true, isVeg: false },
   { id: 103, name: "Chicken Chowmein", description: "Stir-fried noodles with fresh vegetables and chicken.", category: "Nepali Specials", cuisine: "Nepali", price: 220, image: "/images/chowmein.jpg", rating: 4.5, isPopular: false, isVeg: false },
@@ -18,7 +19,7 @@ const OUR_DISHES = [
 ];
 
 // The API has no prices, so the café sets a price for each meal type
-const PRICES = {
+export const PRICES = {
   Breakfast: 280,
   Appetizer: 320,
   Lunch: 450,
@@ -50,7 +51,7 @@ const NON_VEG_WORDS = [
 ];
 
 // Get all the words from a recipe's name, tags and ingredients
-function getWords(recipe) {
+export function getWords(recipe) {
   const text = [recipe.name, ...recipe.tags, ...recipe.ingredients]
     .join(" ")
     .toLowerCase();
@@ -58,7 +59,7 @@ function getWords(recipe) {
 }
 
 // A dish is veg if none of its words is a non-veg word (or its plural, like "eggs")
-function checkIsVeg(words) {
+export function checkIsVeg(words) {
   return !NON_VEG_WORDS.some(
     (word) => words.includes(word) || words.includes(word + "s")
   );

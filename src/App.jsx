@@ -8,6 +8,7 @@ import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import OrderSuccess from "./pages/OrderSuccess";
 import NotFound from "./pages/NotFound";
+import DishDetails from "./pages/DishDetails";
 
 function App() {
   return (
@@ -23,6 +24,8 @@ function App() {
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/order-success" element={<OrderSuccess />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/menu" element={<Menu />} />
+          <Route path="/menu/:id" element={<DishDetails />} />
         </Routes>
       </main>
 
