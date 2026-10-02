@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Flame, Star } from "lucide-react";
-import "./FoodCard.css";
+import { Star } from "lucide-react";
+import { formatPrice } from "../utils/formatPrice";
+
 
 function FoodCard({ item, onAddToCart }) {
   const [added, setAdded] = useState(false);
@@ -23,6 +24,7 @@ function FoodCard({ item, onAddToCart }) {
           </span>
         )}
 
+        {/* green = veg, red = non-veg */}
         <span
           className={`veg-mark ${item.isVeg ? "veg" : "non-veg"}`}
           title={item.isVeg ? "Vegetarian" : "Non-vegetarian"}
@@ -34,20 +36,22 @@ function FoodCard({ item, onAddToCart }) {
       </div>
 
       <div className="food-body">
+        <p className="food-meta">
+          <span>{item.cuisine}</span>
+          <span className="food-rating">
+            <Star size={12} fill="currentColor" aria-hidden="true" />
+            {item.rating}
+          </span>
+        </p>
+
         <div className="food-title-row">
           <h3>{item.name}</h3>
-          {item.isSpicy && (
-            <span className="spicy" title="Spicy">
-              <Flame size={18} aria-hidden="true" />
-              <span className="sr-only">Spicy</span>
-            </span>
-          )}
         </div>
 
         <p className="food-desc">{item.description}</p>
 
         <div className="food-footer">
-          <span className="food-price">Rs. {item.price}</span>
+          <span className="food-price">{formatPrice(item.price)}</span>
           <button
             className={`add-btn ${added ? "added" : ""}`}
             onClick={handleAdd}

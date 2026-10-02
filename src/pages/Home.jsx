@@ -8,7 +8,7 @@ import {
   Check,
   Coffee,
 } from "lucide-react";
-import "./Home.css";
+
 
 /* ===== DATA ===== */
 const features = [

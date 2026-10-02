@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { useCart } from "../context/CartContext";
-import "./Navbar.css";
+
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);

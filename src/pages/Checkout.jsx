@@ -2,7 +2,6 @@ import { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart, FREE_DELIVERY_MIN, DELIVERY_FEE } from "../context/CartContext";
 import { formatPrice } from "../utils/formatPrice";
-import "./Checkout.css";
 import { Bike, Store, Banknote } from "lucide-react";
 
 /* ===== VALIDATION RULES ===== */

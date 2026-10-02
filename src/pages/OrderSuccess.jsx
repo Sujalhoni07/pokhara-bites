@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { formatPrice } from "../utils/formatPrice";
-import "./OrderSuccess.css";
+
 
 function OrderSuccess() {
   const location = useLocation();

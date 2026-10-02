@@ -15,7 +15,7 @@ import {
   MAX_QUANTITY,
 } from "../context/CartContext";
 import { formatPrice } from "../utils/formatPrice";
-import "./Cart.css";
+import { Image } from "../components/Image";
 
 function Cart() {
   // Hooks must be called at the top, before any "return"
@@ -76,7 +76,7 @@ function Cart() {
             <ul className="cart-list">
               {cartItems.map((item) => (
                 <li key={item.id} className="cart-item">
-                  <img src={item.image} alt={item.name} className="cart-item-img" />
+                  <Image src={item.image} alt={item.name} width={"200px"} height={"200px"} className="cart-item-img"/>
 
                   <div className="cart-item-info">
                     <h2 className="cart-item-name">{item.name}</h2>
