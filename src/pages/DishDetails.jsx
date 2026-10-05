@@ -179,33 +179,21 @@ function DishDetails() {
         </div>
       </div>
 
-      {/* BOTTOM: ingredients + steps */}
-      {(dish.ingredients || dish.instructions) && (
+            {/* BOTTOM: ingredients */}
+      {dish.ingredients && (
         <div className="dish-bottom">
-          {dish.ingredients && (
-            <div>
-              <h2>Ingredients</h2>
-              <ul className="ingredient-list">
-                {dish.ingredients.map((ingredient) => (
-                  <li key={ingredient}>{ingredient}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {dish.instructions && (
-            <div>
-              <h2>How we make it</h2>
-              <ol className="step-list">
-                {dish.instructions.map((step, index) => (
-                  <li key={step}>
-                    <span className="step-number">{index + 1}</span>
-                    <p>{step}</p>
-                  </li>
-                ))}
-              </ol>
-            </div>
-          )}
+          <div>
+            <h2>What's inside</h2>
+            <p className="dish-note">
+              We list our ingredients so you can check for allergies and
+              dietary needs. Our recipes and cooking methods stay in our kitchen.
+            </p>
+            <ul className="ingredient-list">
+              {dish.ingredients.map((ingredient) => (
+                <li key={ingredient}>{ingredient}</li>
+              ))}
+            </ul>
+          </div>
         </div>
       )}
     </section>

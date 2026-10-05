@@ -9,6 +9,9 @@ import Checkout from "./pages/Checkout";
 import OrderSuccess from "./pages/OrderSuccess";
 import NotFound from "./pages/NotFound";
 import DishDetails from "./pages/DishDetails";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import Reserve from "./pages/Reserve";
 
 function App() {
   return (
@@ -26,6 +29,10 @@ function App() {
           <Route path="*" element={<NotFound />} />
           <Route path="/menu" element={<Menu />} />
           <Route path="/menu/:id" element={<DishDetails />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/reserve" element={<Reserve />} />
         </Routes>
       </main>
 

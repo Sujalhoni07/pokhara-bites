@@ -1,12 +1,16 @@
 import { useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
+import { Sun, Moon } from "lucide-react";
 import { useCart } from "../context/CartContext";
-
+import { useTheme } from "../context/ThemeContext";
+import { useAuth } from "../context/AuthContext";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { totalItems } = useCart();
   const { pathname, hash } = useLocation();
+  const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
 
   const isAboutActive = pathname === "/" && hash === "#about";
 
@@ -30,6 +34,7 @@ function Navbar() {
 
         <ul className={`nav-links ${menuOpen ? "open" : ""}`}>
           <li>
+            
             <NavLink
               to="/"
               end
@@ -40,8 +45,8 @@ function Navbar() {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/menu" onClick={closeMenu}>
-              Menu
+            <NavLink to="/reserve" onClick={closeMenu}>
+              Reserve
             </NavLink>
           </li>
           <li>
@@ -61,6 +66,28 @@ function Navbar() {
         </ul>
 
         <div className="nav-actions">
+          {user ? (
+            <div className="user-box">
+              <span className="user-name">Hi, {user.name.split(" ")[0]}</span>
+              <button className="logout-btn" onClick={logout}>
+                Log out
+              </button>
+            </div>
+          ) : (
+            <Link to="/login" className="login-link" onClick={closeMenu}>
+              Log in
+            </Link>
+          )}
+
+          <button
+            className="theme-btn"
+            onClick={toggleTheme}
+            aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+            title={theme === "dark" ? "Light mode" : "Dark mode"}
+          >
+            {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
+
           <Link
             to="/cart"
             className="cart-link"
