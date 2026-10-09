@@ -1,6 +1,7 @@
 const express = require("express");
 const authRoutes = require("./modules/auth/auth.routes");
 const adminRoutes = require("./modules/admin/admin.routes");
+const reservationRoutes = require("./modules/reservations/reservation.routes");
 
 const router = express.Router();
 
@@ -11,8 +12,6 @@ router.get("/health", (req, res) => {
 
 router.use("/auth", authRoutes); // /api/auth/...
 router.use("/admin", adminRoutes); // /api/admin/...
-
-// TODO (backend team): mount new modules here, e.g.
-// router.use("/orders", orderRoutes);
+router.use("/reservations", reservationRoutes); // /api/reservations/...
 
 module.exports = router;
