@@ -3193,3 +3193,222 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     align-items: flex-start;
   }
 }
+
+/* ========== ADMIN DASHBOARD ========== */
+.dash-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.dash-header h1 {
+  margin-bottom: 6px;
+}
+.dash-sub {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+.dash-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.btn.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* summary cards */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.stat-icon {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  background: rgba(232, 169, 72, 0.12);
+  border-radius: 12px;
+  color: var(--accent);
+}
+.stat-value {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  line-height: 1.1;
+}
+.stat-label {
+  color: var(--text-muted);
+  font-size: 0.82rem;
+}
+
+/* filters + search */
+.dash-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.dash-toolbar .category-tabs {
+  margin-bottom: 0;
+}
+.dash-toolbar .search-box {
+  flex: 0 1 300px;
+}
+
+/* table */
+.table-wrap {
+  overflow-x: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.res-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+.res-table th {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-align: left;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.res-table td {
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.res-table tbody tr {
+  transition: background var(--transition);
+}
+.res-table tbody tr:hover {
+  background: var(--surface-2);
+}
+.res-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.today-tag {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #1a1208;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+.phone-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  transition: color var(--transition);
+}
+.phone-link:hover {
+  color: var(--accent);
+}
+
+/* action buttons */
+.row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.action-btn {
+  padding: 6px 14px;
+  border: 1.5px solid;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: background var(--transition), color var(--transition);
+}
+.action-btn:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+.action-btn.confirm {
+  border-color: rgba(95, 191, 127, 0.5);
+  color: #5fbf7f;
+}
+.action-btn.confirm:hover:not(:disabled) {
+  background: #5fbf7f;
+  color: #10301c;
+}
+.action-btn.complete {
+  border-color: rgba(232, 169, 72, 0.5);
+  color: var(--accent);
+}
+.action-btn.complete:hover:not(:disabled) {
+  background: var(--accent);
+  color: #1a1208;
+}
+.action-btn.cancel {
+  border-color: rgba(217, 83, 79, 0.5);
+  color: var(--danger);
+}
+.action-btn.cancel:hover:not(:disabled) {
+  background: var(--danger);
+  color: #fff;
+}
+.muted {
+  color: var(--text-muted);
+}
+
+/* on phones, each table row becomes a card */
+@media (max-width: 760px) {
+  .table-wrap {
+    overflow-x: visible;
+  }
+  .res-table thead {
+    display: none;
+  }
+  .res-table,
+  .res-table tbody,
+  .res-table tr,
+  .res-table td {
+    display: block;
+    width: 100%;
+  }
+  .res-table tr {
+    padding: 12px 4px;
+    border-bottom: 1px solid var(--border);
+  }
+  .res-table td {
+    padding: 6px 12px;
+    border: none;
+  }
+  .res-table td::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 2px;
+    color: var(--text-muted);
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+}
