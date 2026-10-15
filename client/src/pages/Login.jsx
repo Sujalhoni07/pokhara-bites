@@ -1,15 +1,24 @@
 import { useState } from "react";
-import { useNavigate, useLocation, Navigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
+import { Link, useNavigate, useLocation, Navigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 function Login() {
-  const { login, isAdmin } = useAuth();
+  const { login, user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const from = location.state?.from; // the page that sent us here, if any
 
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+
+  // where each role should land after logging in
+  function destinationFor(account) {
+    if (account.role === "admin") {
+      return from?.startsWith("/admin") ? from : "/admin";
+    }
+    return from && !from.startsWith("/admin") ? from : "/";
+  }
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -26,7 +35,7 @@ function Login() {
     }
 
     setBusy(true);
-    const message = await login(form.email, form.password);
+    const { user: account, error: message } = await login(form.email, form.password);
     setBusy(false);
 
     if (message) {
@@ -34,20 +43,27 @@ function Login() {
       return;
     }
 
-    // go back to the page the admin wanted, or to the dashboard
-    navigate(location.state?.from || "/admin", { replace: true });
+    navigate(destinationFor(account), { replace: true });
   }
 
-  // already logged in: no need to see the login form
-  if (isAdmin) {
-    return <Navigate to="/admin" replace />;
+  // already logged in → no need to see this page
+  if (user) {
+    return <Navigate to={destinationFor(user)} replace />;
   }
 
   return (
     <section className="page container auth-page">
       <div className="auth-card">
-        <h1>Admin Login</h1>
-        <p className="auth-subtitle">For café staff only.</p>
+        <h1>Welcome Back</h1>
+        <p className="auth-subtitle">Log in to reserve tables and see your bookings.</p>
+
+        {from && (
+          <p className="auth-notice">
+            {from === "/reserve"
+              ? "Please log in to reserve a table."
+              : "Please log in to continue."}
+          </p>
+        )}
 
         <form onSubmit={handleSubmit} noValidate>
           <div className="field">
@@ -57,7 +73,7 @@ function Login() {
               name="email"
               type="email"
               autoComplete="username"
-              placeholder="admin@pokharabites.com"
+              placeholder="you@example.com"
               value={form.email}
               onChange={handleChange}
             />
@@ -77,7 +93,7 @@ function Login() {
           </div>
 
           {error && (
-            <p className="field-error" role="alert">
+            <p className="field-error form-error" role="alert">
               {error}
             </p>
           )}
@@ -86,6 +102,13 @@ function Login() {
             {busy ? "Logging in…" : "Log In"}
           </button>
         </form>
+
+        <p className="auth-switch">
+          New here?{" "}
+          <Link to="/signup" state={{ from }}>
+            Create an account
+          </Link>
+        </p>
       </div>
     </section>
   );

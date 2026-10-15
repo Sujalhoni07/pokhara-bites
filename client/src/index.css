@@ -2868,3 +2868,328 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   font-size: 0.95rem;
   font-weight: 500;
 }
+
+/* ========== AUTH EXTRAS ========== */
+.auth-notice {
+  margin-bottom: 20px;
+  padding: 12px 14px;
+  background: rgba(232, 169, 72, 0.1);
+  border: 1px solid rgba(232, 169, 72, 0.3);
+  border-radius: 10px;
+  color: var(--text);
+  font-size: 0.9rem;
+}
+.form-error {
+  margin-bottom: 12px;
+}
+
+.password-input {
+  position: relative;
+}
+.password-input input {
+  padding-right: 70px;
+}
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.user-greeting {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* ========== MY RESERVATIONS ========== */
+.my-res-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.my-res-section {
+  margin-bottom: 40px;
+}
+.my-res-section h2 {
+  margin-bottom: 16px;
+  font-size: 1.3rem;
+}
+
+.res-list {
+  display: grid;
+  gap: 16px;
+  list-style: none;
+}
+.res-card {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: border-color var(--transition);
+}
+.res-card:hover {
+  border-color: rgba(232, 169, 72, 0.4);
+}
+.res-card.is-past {
+  opacity: 0.7;
+}
+
+.res-main {
+  display: grid;
+  gap: 6px;
+}
+.res-code {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.res-when {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+}
+.res-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+.res-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.res-note {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+.res-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+.res-status {
+  padding: 4px 12px;
+  border: 1px solid;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+.res-status.pending {
+  color: var(--accent);
+  border-color: rgba(232, 169, 72, 0.4);
+  background: rgba(232, 169, 72, 0.1);
+}
+.res-status.confirmed {
+  color: #5fbf7f;
+  border-color: rgba(95, 191, 127, 0.4);
+  background: rgba(95, 191, 127, 0.1);
+}
+.res-status.cancelled {
+  color: var(--danger);
+  border-color: rgba(217, 83, 79, 0.4);
+  background: rgba(217, 83, 79, 0.1);
+}
+.res-status.completed {
+  color: var(--text-muted);
+  border-color: var(--border);
+}
+
+.res-cancel {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: color var(--transition);
+}
+.res-cancel:hover:not(:disabled) {
+  color: var(--danger);
+}
+
+@media (max-width: 768px) {
+  .user-greeting {
+    display: none;
+  }
+}
+@media (max-width: 560px) {
+  .res-side {
+    align-items: flex-start;
+  }
+}
+/* ========== AUTH EXTRAS ========== */
+.auth-notice {
+  margin-bottom: 20px;
+  padding: 12px 14px;
+  background: rgba(232, 169, 72, 0.1);
+  border: 1px solid rgba(232, 169, 72, 0.3);
+  border-radius: 10px;
+  color: var(--text);
+  font-size: 0.9rem;
+}
+.form-error {
+  margin-bottom: 12px;
+}
+
+.password-input {
+  position: relative;
+}
+.password-input input {
+  padding-right: 70px;
+}
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.user-greeting {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* ========== MY RESERVATIONS ========== */
+.my-res-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.my-res-section {
+  margin-bottom: 40px;
+}
+.my-res-section h2 {
+  margin-bottom: 16px;
+  font-size: 1.3rem;
+}
+
+.res-list {
+  display: grid;
+  gap: 16px;
+  list-style: none;
+}
+.res-card {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: border-color var(--transition);
+}
+.res-card:hover {
+  border-color: rgba(232, 169, 72, 0.4);
+}
+.res-card.is-past {
+  opacity: 0.7;
+}
+
+.res-main {
+  display: grid;
+  gap: 6px;
+}
+.res-code {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.res-when {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+}
+.res-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+.res-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.res-note {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+.res-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+.res-status {
+  padding: 4px 12px;
+  border: 1px solid;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+.res-status.pending {
+  color: var(--accent);
+  border-color: rgba(232, 169, 72, 0.4);
+  background: rgba(232, 169, 72, 0.1);
+}
+.res-status.confirmed {
+  color: #5fbf7f;
+  border-color: rgba(95, 191, 127, 0.4);
+  background: rgba(95, 191, 127, 0.1);
+}
+.res-status.cancelled {
+  color: var(--danger);
+  border-color: rgba(217, 83, 79, 0.4);
+  background: rgba(217, 83, 79, 0.1);
+}
+.res-status.completed {
+  color: var(--text-muted);
+  border-color: var(--border);
+}
+
+.res-cancel {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: color var(--transition);
+}
+.res-cancel:hover:not(:disabled) {
+  color: var(--danger);
+}
+
+@media (max-width: 768px) {
+  .user-greeting {
+    display: none;
+  }
+}
+@media (max-width: 560px) {
+  .res-side {
+    align-items: flex-start;
+  }
+}

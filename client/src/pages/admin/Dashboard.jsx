@@ -3,7 +3,7 @@ import { useAuth } from "../../context/AuthContext";
 import { getSummary } from "../../api/admin.api";
 
 function Dashboard() {
-  const { admin, logout } = useAuth();
+  const { user, logout } = useAuth();
   const [message, setMessage] = useState("Loading…");
 
   useEffect(() => {
@@ -23,7 +23,7 @@ function Dashboard() {
       <div className="auth-card">
         <h1>Admin Dashboard</h1>
         <p className="auth-subtitle">{message}</p>
-        <p className="auth-subtitle">Logged in as {admin.email}</p>
+        <p className="auth-subtitle">Logged in as {user.email}</p>
         <button className="btn btn-outline auth-btn" onClick={logout}>
           Log out
         </button>

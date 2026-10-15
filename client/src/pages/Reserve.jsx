@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { CalendarCheck, Clock, Users, Phone } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
+import { createReservation } from "../api/reservations.api";
+import { formatDate, formatTime } from "../utils/dateFormat";
 
 const PHONE_PATTERN = /^(98|97)\d{8}$/;
 const MAX_GUESTS = 20;
 const DAYS_AHEAD = 30;
 const LARGE_GROUP = 8;
 
-/* ===== DATE HELPERS (use local Nepal time, not UTC) ===== */
+/* ===== DATE HELPERS (local Nepal time, not UTC) ===== */
 
-// Date → "YYYY-MM-DD"
 function toInputDate(date) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -17,14 +19,12 @@ function toInputDate(date) {
   return `${year}-${month}-${day}`;
 }
 
-// "YYYY-MM-DD" → Date at local midnight
 function parseLocalDate(dateString) {
   return new Date(dateString + "T00:00");
 }
 
-/* ===== OPENING HOURS ===== */
+/* ===== OPENING HOURS (the backend checks the same rules) ===== */
 
-// Saturday (day 6) has different hours
 function getHours(dateString) {
   const isSaturday = parseLocalDate(dateString).getDay() === 6;
   return {
@@ -34,22 +34,14 @@ function getHours(dateString) {
   };
 }
 
-// Time slots every 30 minutes, the last one 1 hour before closing
 function getTimeSlots(dateString) {
   const { open, close } = getHours(dateString);
   const slots = [];
 
   for (let hour = open; hour <= close - 1; hour++) {
     for (const minute of [0, 30]) {
-      const hour12 = hour % 12 === 0 ? 12 : hour % 12;
-      const suffix = hour < 12 ? "AM" : "PM";
-      const mm = String(minute).padStart(2, "0");
-
-      slots.push({
-        value: `${String(hour).padStart(2, "0")}:${mm}`,
-        label: `${hour12}:${mm} ${suffix}`,
-        hours: hour + minute / 60,
-      });
+      const value = `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
+      slots.push({ value, label: formatTime(value), hours: hour + minute / 60 });
     }
   }
 
@@ -57,22 +49,28 @@ function getTimeSlots(dateString) {
 }
 
 function Reserve() {
+  const { user } = useAuth();
+
   const today = new Date();
   const todayString = toInputDate(today);
-
   const maxDate = new Date();
   maxDate.setDate(today.getDate() + DAYS_AHEAD);
   const maxDateString = toInputDate(maxDate);
 
-  const [form, setForm] = useState({
-    name: "",
-    phone: "",
+  // pre-filled from the customer's account
+  const emptyForm = {
+    name: user?.name || "",
+    phone: user?.phone || "",
     date: todayString,
     guests: 2,
     time: "",
     note: "",
-  });
+  };
+
+  const [form, setForm] = useState(emptyForm);
   const [submitted, setSubmitted] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [serverError, setServerError] = useState("");
   const [booking, setBooking] = useState(null);
 
   const slots = form.date ? getTimeSlots(form.date) : [];
@@ -81,12 +79,11 @@ function Reserve() {
   const nowHours = today.getHours() + today.getMinutes() / 60;
   const guests = Number(form.guests);
 
-  // A slot is unavailable if it is today and already passed (+30 min to prepare)
   function isSlotPast(slot) {
     return isToday && slot.hours <= nowHours + 0.5;
   }
 
-  /* ----- validation ----- */
+  /* ----- validation (same rules as the backend) ----- */
   const errors = {};
   if (form.name.trim().length < 3) {
     errors.name = "Please enter your full name.";
@@ -120,48 +117,51 @@ function Reserve() {
   /* ----- events ----- */
   function handleChange(e) {
     const { name, value } = e.target;
-    const cleanValue =
-      name === "phone" ? value.replace(/\D/g, "").slice(0, 10) : value;
+    const cleanValue = name === "phone" ? value.replace(/\D/g, "").slice(0, 10) : value;
 
     setForm((prev) => ({
       ...prev,
       [name]: cleanValue,
-      // a new date can make the chosen time invalid, so clear it
-      ...(name === "date" ? { time: "" } : {}),
+      ...(name === "date" ? { time: "" } : {}), // a new date can make the time invalid
     }));
+    setServerError("");
   }
 
   function chooseTime(value) {
     setForm((prev) => ({ ...prev, time: value }));
+    setServerError("");
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     setSubmitted(true);
+    setServerError("");
 
     if (Object.keys(errors).length > 0) return;
 
-    const chosen = slots.find((slot) => slot.value === form.time);
-
-    setBooking({
-      code: "PB-R" + Date.now().toString().slice(-5),
-      name: form.name.trim(),
-      phone: form.phone,
-      guests,
-      note: form.note.trim(),
-      dateLabel: parseLocalDate(form.date).toLocaleDateString("en-GB", {
-        weekday: "long",
-        day: "numeric",
-        month: "long",
-      }),
-      timeLabel: chosen.label,
-    });
+    setBusy(true);
+    try {
+      const data = await createReservation({
+        name: form.name.trim(),
+        phone: form.phone,
+        date: form.date,
+        time: form.time,
+        guests,
+        note: form.note.trim(),
+      });
+      setBooking(data.reservation); // the real booking from the server
+    } catch (err) {
+      setServerError(err.message);
+    } finally {
+      setBusy(false);
+    }
   }
 
   function bookAnother() {
     setBooking(null);
     setSubmitted(false);
-    setForm({ name: "", phone: "", date: todayString, guests: 2, time: "", note: "" });
+    setServerError("");
+    setForm(emptyForm);
   }
 
   /* ===== CONFIRMATION ===== */
@@ -171,9 +171,10 @@ function Reserve() {
         <span className="reserve-icon" aria-hidden="true">
           <CalendarCheck size={44} strokeWidth={1.5} />
         </span>
-        <h1>Table Reserved!</h1>
+        <h1>Booking Received!</h1>
         <p className="reserve-lead">
-          Thank you, {booking.name.split(" ")[0]}. We're saving a table for you.
+          Thank you, {booking.name.split(" ")[0]}. Your booking is waiting for the
+          café to confirm it.
         </p>
 
         <div className="reserve-summary">
@@ -183,11 +184,11 @@ function Reserve() {
           </div>
           <div>
             <span>Date</span>
-            <strong>{booking.dateLabel}</strong>
+            <strong>{formatDate(booking.date)}</strong>
           </div>
           <div>
             <span>Time</span>
-            <strong>{booking.timeLabel}</strong>
+            <strong>{formatTime(booking.time)}</strong>
           </div>
           <div>
             <span>Guests</span>
@@ -204,8 +205,8 @@ function Reserve() {
           <button className="btn btn-outline" onClick={bookAnother}>
             Book Another Table
           </button>
-          <Link to="/menu" className="btn btn-primary">
-            See the Menu
+          <Link to="/my-reservations" className="btn btn-primary">
+            My Reservations
           </Link>
         </div>
       </section>
@@ -227,7 +228,6 @@ function Reserve() {
       </header>
 
       <div className="reserve-layout">
-        {/* LEFT: form */}
         <form className="reserve-card" onSubmit={handleSubmit} noValidate>
           <h2>Your Details</h2>
 
@@ -239,14 +239,11 @@ function Reserve() {
                 name="name"
                 type="text"
                 autoComplete="name"
-                placeholder="e.g. Sujal Tiwari"
                 value={form.name}
                 onChange={handleChange}
                 className={showError("name") ? "invalid" : ""}
               />
-              {showError("name") && (
-                <p className="field-error" role="alert">{errors.name}</p>
-              )}
+              {showError("name") && <p className="field-error">{errors.name}</p>}
             </div>
 
             <div className="field">
@@ -264,9 +261,7 @@ function Reserve() {
                   className={showError("phone") ? "invalid" : ""}
                 />
               </div>
-              {showError("phone") && (
-                <p className="field-error" role="alert">{errors.phone}</p>
-              )}
+              {showError("phone") && <p className="field-error">{errors.phone}</p>}
             </div>
           </div>
 
@@ -283,9 +278,7 @@ function Reserve() {
                 onChange={handleChange}
                 className={showError("date") ? "invalid" : ""}
               />
-              {showError("date") && (
-                <p className="field-error" role="alert">{errors.date}</p>
-              )}
+              {showError("date") && <p className="field-error">{errors.date}</p>}
             </div>
 
             <div className="field">
@@ -303,13 +296,10 @@ function Reserve() {
                   </option>
                 ))}
               </select>
-              {showError("guests") && (
-                <p className="field-error" role="alert">{errors.guests}</p>
-              )}
+              {showError("guests") && <p className="field-error">{errors.guests}</p>}
             </div>
           </div>
 
-          {/* TIME SLOTS */}
           <div className="field">
             <p className="slot-title">
               Time {hours && <span className="optional">({hours.label})</span>}
@@ -319,21 +309,18 @@ function Reserve() {
               <p className="field-hint slot-hint">Choose a date to see the times.</p>
             ) : (
               <div className="slot-grid" role="group" aria-label="Choose a time">
-                {slots.map((slot) => {
-                  const past = isSlotPast(slot);
-                  return (
-                    <button
-                      key={slot.value}
-                      type="button"
-                      disabled={past}
-                      aria-pressed={form.time === slot.value}
-                      className={`slot ${form.time === slot.value ? "selected" : ""}`}
-                      onClick={() => chooseTime(slot.value)}
-                    >
-                      {slot.label}
-                    </button>
-                  );
-                })}
+                {slots.map((slot) => (
+                  <button
+                    key={slot.value}
+                    type="button"
+                    disabled={isSlotPast(slot)}
+                    aria-pressed={form.time === slot.value}
+                    className={`slot ${form.time === slot.value ? "selected" : ""}`}
+                    onClick={() => chooseTime(slot.value)}
+                  >
+                    {slot.label}
+                  </button>
+                ))}
               </div>
             )}
 
@@ -342,9 +329,7 @@ function Reserve() {
                 No slots left today. Please choose another date.
               </p>
             )}
-            {showError("time") && (
-              <p className="field-error" role="alert">{errors.time}</p>
-            )}
+            {showError("time") && <p className="field-error">{errors.time}</p>}
           </div>
 
           <div className="field">
@@ -375,15 +360,20 @@ function Reserve() {
             </div>
           )}
 
-          <button type="submit" className="btn btn-primary reserve-btn">
-            Reserve Table
+          {serverError && (
+            <p className="field-error form-error" role="alert">
+              {serverError}
+            </p>
+          )}
+
+          <button type="submit" className="btn btn-primary reserve-btn" disabled={busy}>
+            {busy ? "Booking…" : "Reserve Table"}
           </button>
           <p className="form-footnote">
-            No payment needed. We'll call you only if something changes.
+            No payment needed. You can cancel from "My Reservations".
           </p>
         </form>
 
-        {/* RIGHT: info */}
         <aside className="reserve-info">
           <h2>Opening Hours</h2>
           <ul className="info-list">

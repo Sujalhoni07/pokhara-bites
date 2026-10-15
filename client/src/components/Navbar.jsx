@@ -9,10 +9,11 @@ function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { totalItems } = useCart();
   const { pathname, hash } = useLocation();
-  const { admin, logout } = useAuth();
+  const { user, isAdmin, isCustomer, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
 
   const isAboutActive = pathname === "/" && hash === "#about";
+  const firstName = user?.name ? user.name.split(" ")[0] : "";
 
   const closeMenu = () => setMenuOpen(false);
 
@@ -22,6 +23,11 @@ function Navbar() {
     if (pathname === "/") {
       document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
     }
+  }
+
+  function handleLogout() {
+    closeMenu();
+    logout();
   }
 
   return (
@@ -70,13 +76,33 @@ function Navbar() {
         </ul>
 
         <div className="nav-actions">
-          {/* Only the logged-in admin sees this. Customers don't log in. */}
-                    {admin && (
+          {/* guest */}
+          {!user && (
+            <Link to="/login" className="login-link" onClick={closeMenu}>
+              Log in
+            </Link>
+          )}
+
+          {/* customer */}
+          {isCustomer && (
+            <div className="user-box">
+              <span className="user-greeting">Hi, {firstName}</span>
+              <Link to="/my-reservations" className="user-name" onClick={closeMenu}>
+                My Bookings
+              </Link>
+              <button className="logout-btn" onClick={handleLogout}>
+                Log out
+              </button>
+            </div>
+          )}
+
+          {/* admin */}
+          {isAdmin && (
             <div className="user-box">
               <Link to="/admin" className="user-name" onClick={closeMenu}>
                 Dashboard
               </Link>
-              <button className="logout-btn" onClick={logout}>
+              <button className="logout-btn" onClick={handleLogout}>
                 Log out
               </button>
             </div>

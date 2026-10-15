@@ -4,17 +4,17 @@ import * as authApi from "../api/auth.api";
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [admin, setAdmin] = useState(null);
+  const [user, setUser] = useState(null);
   const [checking, setChecking] = useState(true);
 
-  // On page load, ask the backend who is logged in
+  // On page load, ask the backend who is logged in (the cookie is sent automatically)
   useEffect(() => {
     async function checkSession() {
       try {
-        const data = await authApi.getCurrentAdmin();
-        setAdmin(data.admin);
+        const data = await authApi.getCurrentUser();
+        setUser(data.user);
       } catch {
-        setAdmin(null); // not logged in, or server not reachable
+        setUser(null); // not logged in, or the server is not reachable
       } finally {
         setChecking(false);
       }
@@ -22,14 +22,24 @@ export function AuthProvider({ children }) {
     checkSession();
   }, []);
 
-  // Returns an error message, or "" if it worked
+  // Both return { user, error }. error is "" when it worked.
   async function login(email, password) {
     try {
       const data = await authApi.login(email, password);
-      setAdmin(data.admin);
-      return "";
+      setUser(data.user);
+      return { user: data.user, error: "" };
     } catch (err) {
-      return err.message;
+      return { user: null, error: err.message };
+    }
+  }
+
+  async function register(details) {
+    try {
+      const data = await authApi.register(details);
+      setUser(data.user);
+      return { user: data.user, error: "" };
+    } catch (err) {
+      return { user: null, error: err.message };
     }
   }
 
@@ -37,12 +47,21 @@ export function AuthProvider({ children }) {
     try {
       await authApi.logout();
     } catch {
-      // even if the request fails, clear the admin locally
+      // even if the request fails, clear the user locally
     }
-    setAdmin(null);
+    setUser(null);
   }
 
-  const value = { admin, isAdmin: Boolean(admin), checking, login, logout };
+  const value = {
+    user,
+    checking,
+    isLoggedIn: Boolean(user),
+    isAdmin: user?.role === "admin",
+    isCustomer: user?.role === "customer",
+    login,
+    register,
+    logout,
+  };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

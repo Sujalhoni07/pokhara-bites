@@ -13,11 +13,15 @@ import DishDetails from "./pages/DishDetails";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import OrderSuccess from "./pages/OrderSuccess";
-import Reserve from "./pages/Reserve";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
 
+// customer pages
+import Reserve from "./pages/Reserve";
+import MyReservations from "./pages/MyReservations";
+
 // admin pages
-import Login from "./pages/admin/Login";
 import Dashboard from "./pages/admin/Dashboard";
 
 function App() {
@@ -35,14 +39,32 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/order-success" element={<OrderSuccess />} />
-          <Route path="/reserve" element={<Reserve />} />
-
-          {/* admin */}
           <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+
+          {/* customer only */}
+          <Route
+            path="/reserve"
+            element={
+              <ProtectedRoute role="customer">
+                <Reserve />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/my-reservations"
+            element={
+              <ProtectedRoute role="customer">
+                <MyReservations />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* admin only */}
           <Route
             path="/admin"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute role="admin">
                 <Dashboard />
               </ProtectedRoute>
             }
