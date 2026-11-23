@@ -1,16 +1,71 @@
-# React + Vite
+# Pokhara Bites
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A full-stack web application for **Pokhara Bites**, a café in Lakeside, Pokhara.
+Customers can browse the menu, order food, and reserve tables.
+Café staff manage reservations from an admin dashboard.
 
-Currently, two official plugins are available:
+> Built by **Sujal Tiwari** during a Full Stack Developer internship at Pocomat Devineers.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Tech stack
 
-## React Compiler
+| Part | Technology |
+|---|---|
+| Frontend | React 19, Vite, React Router, Lucide icons, plain CSS with design tokens |
+| Backend | Node.js, Express 5 |
+| Auth | JWT in an httpOnly cookie, bcrypt password hashing, role-based access |
+| Security | Helmet, CORS, rate limiting, server-side validation |
+| Database | JSON files for now → **PostgreSQL** (in progress) |
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Project structure
 
-## Expanding the Oxlint configuration
+```
+pokhara-bites/
+├── client/    React frontend  → see client/README.md
+└── server/    Express API     → see server/README.md
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+## Run it locally
+
+You need **Node.js 20+**. Open two terminals.
+
+```bash
+# Terminal 1 – backend
+cd server
+npm install
+cp .env.example .env          # then fill in the values
+npm run dev                   # http://localhost:4000
+
+# Terminal 2 – frontend
+cd client
+npm install
+cp .env.example .env
+npm run dev                   # http://localhost:5173
+```
+
+## Features
+
+**Customers**
+- Browse the menu with search, category filters, veg-only filter and sorting
+- Cart (saved in the browser) and checkout for delivery or pickup
+- Sign up / log in, reserve a table, view and cancel bookings
+
+**Admin**
+- Log in to the dashboard
+- See today's bookings and guests, filter and search reservations
+- Confirm, complete or cancel reservations
+
+## Roadmap
+
+- [x] Step 0 – Clean-up and documentation
+- [ ] Step 1 – PostgreSQL database
+- [ ] Step 2 – Reservation business rules + API tests
+- [ ] Step 3 – Menu module (real menu from the database, admin management)
+- [ ] Step 4 – Orders module (prices calculated on the server)
+- [ ] Step 5 – Design system and UI polish
+- [ ] Step 6 – Production readiness and deployment
+
+## Git workflow
+
+- `main` always works.
+- Every change is made on its own branch, for example `feature/orders-api` or `chore/cleanup`.
+- Changes reach `main` through a **pull request** on GitHub.

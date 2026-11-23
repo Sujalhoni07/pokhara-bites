@@ -1,7 +1,8 @@
 # Pokhara Bites – Backend API
 
 Express API for the Pokhara Bites café website.
-Currently handles **admin authentication**. Customers do not log in.
+Handles **customer sign-up, login for customers and the admin, and table reservations**.
+Data is stored in JSON files for now (`server/data/`). PostgreSQL is being added in Step 1.
 
 ## Quick start
 
@@ -65,10 +66,13 @@ src/
 ├── routes.js           mounts all modules under /api
 ├── config/env.js       settings (loaded and checked once)
 ├── middleware/         requireAuth, validate, rateLimit, errorHandler
-├── utils/              AppError, asyncHandler, authCookie
+├── database/           jsonStore.js (temporary file storage)
+├── utils/              AppError, asyncHandler, authCookie, dateTime
 └── modules/
-    ├── auth/           login, logout, me
-    └── admin/          admin routes + admin repository
+    ├── auth/           register, login, logout, me
+    ├── users/          customer accounts (repository)
+    ├── reservations/   create, list, cancel, change status
+    └── admin/          admin routes + admin account (from .env)
 ```
 
 ## API
@@ -79,9 +83,15 @@ Requests from the browser must use `credentials: "include"`.
 | Method | Endpoint | Auth | Body | Success | Errors |
 |---|---|---|---|---|---|
 | GET | `/api/health` | – | – | `{ status: "ok" }` | – |
-| POST | `/api/auth/login` | – | `{ email, password }` | `{ admin: { email, role } }` + cookie | 400, 401, 429 |
+| POST | `/api/auth/register` | – | `{ name, email, phone, password }` | 201 `{ user }` + cookie | 400, 409, 429 |
+| POST | `/api/auth/login` | – | `{ email, password }` | `{ user }` + cookie | 400, 401, 429 |
 | POST | `/api/auth/logout` | – | – | `{ message }` + clears cookie | – |
-| GET | `/api/auth/me` | cookie | – | `{ admin: { id, email, role } }` | 401 |
+| GET | `/api/auth/me` | cookie | – | `{ user: { id, name, email, phone, role } }` | 401 |
+| POST | `/api/reservations` | customer | `{ name, phone, date, time, guests, note }` | 201 `{ reservation }` | 400, 401, 403, 429 |
+| GET | `/api/reservations/mine` | customer | – | `{ reservations }` | 401, 403 |
+| PATCH | `/api/reservations/mine/:id/cancel` | customer | – | `{ reservation }` | 400, 404 |
+| GET | `/api/reservations` | admin | – | `{ reservations }` | 401, 403 |
+| PATCH | `/api/reservations/:id/status` | admin | `{ status }` | `{ reservation }` | 400, 404 |
 | GET | `/api/admin/summary` | admin | – | `{ message, role }` | 401, 403 |
 
 ## How authentication works
@@ -89,7 +99,7 @@ Requests from the browser must use `credentials: "include"`.
 1. `POST /api/auth/login` → the password is checked against a **bcrypt hash**.
 2. If correct, a **JWT** (8 hours) is stored in an **httpOnly cookie** `pb_token`.
 3. `requireAuth` verifies the cookie and sets `req.user = { id, email, role }`.
-4. `requireRole("admin")` blocks non-admins (403).
+4. `requireRole("admin")` or `requireRole("customer")` blocks the wrong role (403).
 5. `POST /api/auth/logout` clears the cookie.
 
 Security: bcrypt hashing, httpOnly cookie, same error for wrong email/password,
@@ -107,17 +117,15 @@ CORS limited to `CLIENT_URL`.
 2. Mount it in `src/routes.js`: `router.use("/orders", orderRoutes);`
 3. Protect admin-only routes with `requireAuth, requireRole("admin")`.
 
-## Backend team tasks
+## Backend roadmap
 
-| # | Task | Where |
+| Step | Task | Where |
 |---|---|---|
-| 1 | Add a database (MongoDB or PostgreSQL) | new `src/config/db.js` |
-| 2 | Store admins in the database | `admin.repository.js` → `findByEmail()` |
-| 3 | Save customer orders (`POST /api/orders`) | new `modules/orders/` |
-| 4 | Save table reservations (`POST /api/reservations`) | new `modules/reservations/` |
-| 5 | Admin: list orders and reservations, update status | `modules/admin/` |
-| 6 | Deploy the API (Render/Railway) | see Deployment |
-| 7 | Tests for the auth flow | new `tests/` folder |
+| 1 | PostgreSQL: one `users` table (customers + admin), `reservations` table | `src/database/`, repositories |
+| 2 | Enforce reservation status rules, slot capacity, per-field errors, API tests | `modules/reservations/`, `tests/` |
+| 3 | Menu module (public menu + admin management) | new `modules/menu/` |
+| 4 | Orders module (server calculates prices and totals) | new `modules/orders/` |
+| 6 | Deploy the API, proxy `/api` through the frontend host | see Deployment checklist |
 
 ## Deployment checklist
 
@@ -137,4 +145,5 @@ CORS limited to `CLIENT_URL`.
 ## Known limitations
 
 - Logout clears the cookie, but a JWT stays valid until it expires (8h).
-- One admin from `.env` until the database is added.
+- One admin from `.env` until the database is added (Step 1).
+- Reservation status changes are not yet limited to valid transitions (Step 2).

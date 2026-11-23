@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { CalendarX, Clock, Users } from "lucide-react";
 import { getMyReservations, cancelMyReservation } from "../api/reservations.api";
-import { formatDate, formatTime } from "../utils/dateFormat";
+import { formatDate, formatTime, isUpcoming } from "../utils/dateFormat";
 
 const STATUS_LABELS = {
   pending: "Waiting for confirmation",
@@ -11,9 +11,7 @@ const STATUS_LABELS = {
   completed: "Completed",
 };
 
-function isUpcoming(reservation) {
-  return new Date(`${reservation.date}T${reservation.time}`) > new Date();
-}
+
 
 /* One booking card */
 function ReservationCard({ reservation, onCancel, cancelling }) {
