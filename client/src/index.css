@@ -1,24 +1,4 @@
-/* ========== DESIGN TOKENS (colours, fonts, sizes) ========== */
-:root {
-  --bg: #121110;
-  --surface: #1c1a17;
-  --surface-2: #26231f;
-  --border: #36312a;
-  --text: #f3ece0;
-  --text-muted: #b3a894;
-  --accent: #e8a948;
-  --accent-hover: #f5bf62;
-  --green: #4a6b57;
-  --danger: #d9534f;
-
-  --font-heading: "Playfair Display", Georgia, serif;
-  --font-body: "Inter", system-ui, sans-serif;
-
-  --radius: 14px;
-  --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-  --transition: 0.3s ease;
-  --max-width: 1200px;
-}
+@import "./styles/tokens.css";
 
 /* ========== RESET ========== */
 *,
@@ -2532,20 +2512,7 @@ textarea {
   }
 }
 
-/* ========== LIGHT THEME ========== */
-:root[data-theme="light"] {
-  --bg: #faf6f0;
-  --surface: #ffffff;
-  --surface-2: #f2ebe1;
-  --border: #e0d6c7;
-  --text: #241f1a;
-  --text-muted: #6b6155;
-  --accent: #b87a1a;
-  --accent-hover: #a06713;
-  --green: #3f7a56;
-  --danger: #c0392b;
-  --shadow: 0 10px 30px rgba(90, 70, 40, 0.12);
-}
+
 
 /* make the page change colour smoothly */
 body {

@@ -1,0 +1,113 @@
+/* ==========================================================
+   DESIGN TOKENS
+   Every colour, size and spacing value in the app comes from here.
+   Change a value once → it changes everywhere.
+   Dark mode is the default. Light mode only overrides colours.
+   ========================================================== */
+
+:root {
+  /* ----- Surfaces (page → card → raised) ----- */
+  --bg: #141210;
+  --surface: #1c1916;
+  --surface-2: #25211d;
+  --border: #3a332b;
+  --border-strong: #4d453b;
+
+  /* ----- Text ----- */
+  --text: #f4ede2;        /* main text           16:1 on bg */
+  --text-muted: #b5aa98;  /* supporting text      8:1 on bg */
+  --text-subtle: #998f80; /* hints, placeholders  5:1 on bg */
+
+  /* ----- Brand accent (gold) ----- */
+  --accent: #e8a948;
+  --accent-hover: #f5bf62;
+  --on-accent: #1a1208;   /* text on a gold background */
+  --accent-soft: color-mix(in srgb, var(--accent) 12%, transparent);
+
+  /* ----- Status colours (one colour per meaning) ----- */
+  --success: #5fb98a;
+  --on-success: #0f2a1b;
+  --success-soft: color-mix(in srgb, var(--success) 14%, transparent);
+
+  --warning: #e89a5b;
+  --on-warning: #2b1606;
+  --warning-soft: color-mix(in srgb, var(--warning) 14%, transparent);
+
+  --danger: #ef6b63;
+  --on-danger: #2c0b09;
+  --danger-soft: color-mix(in srgb, var(--danger) 14%, transparent);
+
+  --info: #7bafd9;
+  --info-soft: color-mix(in srgb, var(--info) 14%, transparent);
+
+  /* old green: still used with white text. Replaced in Step 2.4 */
+  --green: #4a6b57;
+
+  /* ----- Typography ----- */
+  --font-heading: "Playfair Display", Georgia, serif;
+  --font-body: "Inter", system-ui, sans-serif;
+
+  --text-xs: 0.75rem;   /* 12px  badges, captions   */
+  --text-sm: 0.875rem;  /* 14px  labels, small text */
+  --text-base: 1rem;    /* 16px  body               */
+  --text-lg: 1.125rem;  /* 18px  lead text, prices  */
+  --text-xl: 1.25rem;   /* 20px  card titles        */
+  --text-2xl: 1.5rem;   /* 24px  section titles     */
+  --text-3xl: 2rem;     /* 32px  page titles        */
+
+  /* ----- Spacing (4px grid) ----- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* ----- Corners ----- */
+  --radius-sm: 8px;     /* small controls, chips  */
+  --radius-md: 10px;    /* buttons, inputs        */
+  --radius: 14px;       /* cards                  */
+  --radius-full: 999px; /* pills, badges, avatars */
+
+  /* ----- Shadows ----- */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.45);
+
+  /* ----- Motion + layout ----- */
+  --transition: 0.3s ease;
+  --max-width: 1200px;
+}
+
+/* ========== LIGHT MODE: only colours change ========== */
+:root[data-theme="light"] {
+  --bg: #faf7f2;
+  --surface: #ffffff;
+  --surface-2: #f3eee6;
+  --border: #e4dbcd;
+  --border-strong: #cfc3b1;
+
+  --text: #1f1a14;
+  --text-muted: #5e5548;
+  --text-subtle: #73685a;
+
+  --accent: #985c12;
+  --accent-hover: #7f4c0d;
+  --on-accent: #ffffff;
+
+  --success: #2a7348;
+  --on-success: #ffffff;
+  --warning: #a14c08;
+  --on-warning: #ffffff;
+  --danger: #c0392b;
+  --on-danger: #ffffff;
+  --info: #2f6fa3;
+
+  --green: #3f7a56;
+
+  --shadow-sm: 0 2px 8px rgba(90, 70, 40, 0.08);
+  --shadow: 0 10px 30px rgba(90, 70, 40, 0.12);
+  --shadow-hover: 0 20px 40px rgba(90, 70, 40, 0.15);
+}
