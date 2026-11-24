@@ -3180,7 +3180,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 .action-btn.cancel:hover:not(:disabled) {
   background: var(--danger);
-  color: #fff;
+    color: var(--on-success);
 }
 .muted {
   color: var(--text-muted);
