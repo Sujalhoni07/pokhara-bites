@@ -2957,24 +2957,26 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   font-size: 0.78rem;
   font-weight: 600;
 }
+/* one colour per status, the same everywhere (tokens.css) */
 .res-status.pending {
-  color: var(--accent);
-  border-color: rgba(232, 169, 72, 0.4);
-  background: rgba(232, 169, 72, 0.1);
+  color: var(--warning);
+  border-color: color-mix(in srgb, var(--warning) 40%, transparent);
+  background: var(--warning-soft);
 }
 .res-status.confirmed {
-  color: #5fbf7f;
-  border-color: rgba(95, 191, 127, 0.4);
-  background: rgba(95, 191, 127, 0.1);
+  color: var(--success);
+  border-color: color-mix(in srgb, var(--success) 40%, transparent);
+  background: var(--success-soft);
 }
 .res-status.cancelled {
   color: var(--danger);
-  border-color: rgba(217, 83, 79, 0.4);
-  background: rgba(217, 83, 79, 0.1);
+  border-color: color-mix(in srgb, var(--danger) 40%, transparent);
+  background: var(--danger-soft);
 }
 .res-status.completed {
-  color: var(--text-muted);
-  border-color: var(--border);
+  color: var(--info);
+  border-color: color-mix(in srgb, var(--info) 40%, transparent);
+  background: var(--info-soft);
 }
 
 .res-cancel {
