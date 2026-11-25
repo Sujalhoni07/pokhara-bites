@@ -2,7 +2,6 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("../../config/env");
 const AppError = require("../../utils/AppError");
-const adminRepository = require("../admin/admin.repository");
 const userRepository = require("../users/user.repository");
 
 const SALT_ROUNDS = 10;
@@ -28,10 +27,6 @@ function createToken(account) {
 
 /* ----- sign up (customers only) ----- */
 async function register({ name, email, phone, password }) {
-  if (email === config.admin.email) {
-    throw new AppError("An account with this email already exists.", 409);
-  }
-
   const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
   const user = await userRepository.create({ name, email, phone, passwordHash });
 
@@ -44,9 +39,7 @@ async function register({ name, email, phone, password }) {
 
 /* ----- log in (admin or customer) ----- */
 async function login(email, password) {
-  const account =
-    (await adminRepository.findByEmail(email)) ||
-    (await userRepository.findByEmail(email));
+  const account = await userRepository.findByEmail(email);
 
   const passwordOk = account
     ? await bcrypt.compare(password, account.passwordHash)
@@ -62,16 +55,12 @@ async function login(email, password) {
 
 /* ----- who am I ----- */
 async function getProfile(tokenUser) {
-  if (tokenUser.role === "customer") {
-    // read fresh details (like the phone) from storage
-    const user = await userRepository.findById(tokenUser.id);
-    if (!user) {
-      throw new AppError("Account not found. Please log in again.", 401);
-    }
-    return toPublicUser(user);
+  // read fresh details (name, phone, role) from the database
+  const user = await userRepository.findById(tokenUser.id);
+  if (!user) {
+    throw new AppError("Account not found. Please log in again.", 401);
   }
-
-  return toPublicUser(tokenUser);
+  return toPublicUser(user);
 }
 
 /* ----- check a token ----- */

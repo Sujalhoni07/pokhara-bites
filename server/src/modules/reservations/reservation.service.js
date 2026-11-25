@@ -26,13 +26,6 @@ function isInPast(reservation) {
   return reservation.date === now.date && toHours(reservation.time) <= now.hours;
 }
 
-// soonest first
-function sortByDateTime(reservations) {
-  return reservations.sort((a, b) =>
-    `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`)
-  );
-}
-
 /* ----- customer ----- */
 
 async function createReservation(userId, data) {
@@ -57,14 +50,19 @@ async function createReservation(userId, data) {
     throw new AppError("This time is no longer available. Please choose another.", 400);
   }
 
-  const code = "PB-R" + crypto.randomInt(10000, 100000);
+  // The code is random, so it could (rarely) be taken already: try again
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const code = "PB-R" + crypto.randomInt(10000, 100000);
+    const reservation = await reservationRepository.create({ ...data, userId, code });
+    if (reservation) return reservation;
+  }
 
-  return reservationRepository.create({ ...data, userId, code });
+  throw new AppError("Could not create the booking. Please try again.", 500);
 }
 
+// The database already sorts them: soonest first
 async function listForUser(userId) {
-  const reservations = await reservationRepository.findByUserId(userId);
-  return sortByDateTime(reservations);
+  return reservationRepository.findByUserId(userId);
 }
 
 async function cancelForUser(userId, id) {
@@ -87,8 +85,7 @@ async function cancelForUser(userId, id) {
 /* ----- admin ----- */
 
 async function listAll() {
-  const reservations = await reservationRepository.findAll();
-  return sortByDateTime(reservations);
+  return reservationRepository.findAll();
 }
 
 async function changeStatus(id, status) {

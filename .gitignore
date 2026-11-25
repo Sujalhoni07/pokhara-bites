@@ -28,5 +28,4 @@ dist-ssr
 .env.*
 !.env.example
 
-# local development data
-server/data/
+
