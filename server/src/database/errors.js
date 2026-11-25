@@ -1,6 +1,7 @@
 /* PostgreSQL error codes we handle on purpose */
 const PG_ERRORS = {
   UNIQUE_VIOLATION: "23505", // e.g. the email is already used
+    FOREIGN_KEY_VIOLATION: "23503", // e.g. a category that does not exist
 };
 
 // Is this a valid UUID? (our ids are UUIDs)
