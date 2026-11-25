@@ -1,0 +1,158 @@
+/* ==========================================================
+   DISH DETAILS PAGE
+   Photo on the left, information on the right,
+   ingredients underneath.
+   ========================================================== */
+
+.dish-page {
+  max-width: 1100px;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  transition: color var(--transition);
+}
+.back-link:hover {
+  color: var(--accent);
+}
+
+.dish-top {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: var(--space-7);
+  align-items: start;
+}
+
+.dish-photo {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+/* category + veg label */
+.dish-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+.dish-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border: 1px solid;
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.dish-tag.category {
+  background: var(--accent-soft);
+  border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+  color: var(--accent);
+}
+.dish-tag.veg {
+  background: var(--success-soft);
+  border-color: color-mix(in srgb, var(--success) 35%, transparent);
+  color: var(--success);
+}
+.dish-tag.non-veg {
+  background: var(--danger-soft);
+  border-color: color-mix(in srgb, var(--danger) 35%, transparent);
+  color: var(--danger);
+}
+.dish-tag.popular {
+  background: var(--surface-2);
+  border-color: var(--border);
+  color: var(--text-muted);
+}
+
+.dish-info h1 {
+  margin-bottom: var(--space-4);
+  line-height: 1.15;
+}
+
+.dish-description {
+  margin-bottom: var(--space-6);
+  color: var(--text-muted);
+  font-size: var(--text-lg);
+  line-height: 1.65;
+}
+
+/* price + add button */
+.dish-buy {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.dish-price-label {
+  color: var(--text-subtle);
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.dish-price {
+  color: var(--text);
+  font-family: var(--font-heading);
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  line-height: 1.1;
+}
+.btn.dish-add.added {
+  background: var(--success);
+  border-color: var(--success);
+  color: var(--on-success);
+}
+
+/* ingredients */
+.dish-bottom {
+  margin-top: var(--space-8);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--border);
+}
+.dish-bottom h2 {
+  margin-bottom: var(--space-2);
+  font-size: var(--text-2xl);
+}
+.dish-note {
+  max-width: 620px;
+  margin-bottom: var(--space-5);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+.ingredient-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  list-style: none;
+}
+.ingredient-list li {
+  padding: 8px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  color: var(--text);
+  font-size: var(--text-sm);
+}
+
+@media (max-width: 900px) {
+  .dish-top {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+}

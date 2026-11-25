@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Leaf,
@@ -8,7 +9,8 @@ import {
   Check,
   Coffee,
 } from "lucide-react";
-import { OUR_DISHES, FEATURED_IDS } from "../data/menu";
+import { getMenu } from "../api/menu.api";
+import { formatPrice } from "../utils/formatPrice";
 
 /* ===== DATA ===== */
 const features = [
@@ -17,8 +19,6 @@ const features = [
   { Icon: Mountain, title: "Lake View Seating", text: "Relax with a view of Phewa Lake and the mountains." },
   { Icon: Wifi, title: "Free Wi-Fi", text: "A calm corner to work, study or meet friends." },
 ];
-
-const featuredDishes = OUR_DISHES.filter((dish) => FEATURED_IDS.includes(dish.id));
 
 const aboutPoints = [
   "Traditional Nepali recipes",
@@ -45,6 +45,14 @@ function getOpenStatus() {
 /* ===== COMPONENT ===== */
 function Home() {
   const { isOpen, hours } = getOpenStatus();
+  const [featuredDishes, setFeaturedDishes] = useState([]);
+
+  // the café's popular dishes, from the database
+  useEffect(() => {
+    getMenu()
+      .then((data) => setFeaturedDishes(data.items.filter((item) => item.isPopular).slice(0, 4)))
+      .catch(() => setFeaturedDishes([])); // the section just stays hidden
+  }, []);
 
   return (
     <>
@@ -112,40 +120,42 @@ function Home() {
         </div>
       </section>
 
-      {/* 3. FEATURED DISHES */}
-      <section className="section">
-        <div className="container">
-          <div className="section-header">
-            <p className="eyebrow">Our Favorites</p>
-            <h2>Most Loved Dishes</h2>
-            <p className="section-subtitle">
-              The plates our regulars order again and again.
-            </p>
-          </div>
+      {/* 3. FEATURED DISHES (only when we have some) */}
+      {featuredDishes.length > 0 && (
+        <section className="section">
+          <div className="container">
+            <div className="section-header">
+              <p className="eyebrow">Our Favorites</p>
+              <h2>Most Loved Dishes</h2>
+              <p className="section-subtitle">
+                The plates our regulars order again and again.
+              </p>
+            </div>
 
-          <div className="dish-grid">
-            {featuredDishes.map((dish) => (
-              <article key={dish.id} className="dish-card">
-                <div className="dish-image">
-                  <img src={dish.image} alt={dish.name} loading="lazy" />
-                </div>
-                <div className="dish-body">
-                  <h3>{dish.name}</h3>
-                  <p>{dish.description}</p>
-                  <div className="dish-footer">
-                    <span className="price">Rs. {dish.price}</span>
-                    <Link to={`/menu/${dish.id}`} className="dish-link">Order →</Link>
+            <div className="dish-grid">
+              {featuredDishes.map((dish) => (
+                <article key={dish.id} className="dish-card">
+                  <div className="dish-image">
+                    <img src={dish.image} alt={dish.name} loading="lazy" />
                   </div>
-                </div>
-              </article>
-            ))}
-          </div>
+                  <div className="dish-body">
+                    <h3>{dish.name}</h3>
+                    <p>{dish.description}</p>
+                    <div className="dish-footer">
+                      <span className="price">{formatPrice(dish.price)}</span>
+                      <Link to={`/menu/${dish.id}`} className="dish-link">Order →</Link>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
 
-          <div className="center">
-            <Link to="/menu" className="btn btn-outline">See Full Menu</Link>
+            <div className="center">
+              <Link to="/menu" className="btn btn-outline">See Full Menu</Link>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* 4. ABOUT */}
       <section id="about" className="section about">

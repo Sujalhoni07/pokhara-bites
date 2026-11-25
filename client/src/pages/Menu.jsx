@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import { WifiOff, SearchX } from "lucide-react";
 import FoodCard from "../components/FoodCard";
 import { useCart } from "../context/CartContext";
-import { fetchMenu } from "../api/menu.api";
+import { getMenu } from "../api/menu.api";
 
 function Menu() {
   const { addToCart } = useCart();
 
   // data
   const [menuItems, setMenuItems] = useState([]);
+  const [categoryList, setCategoryList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -16,13 +17,15 @@ function Menu() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
   const [vegOnly, setVegOnly] = useState(false);
-  const [sortBy, setSortBy] = useState("rating");
+  const [sortBy, setSortBy] = useState("recommended");
 
   async function loadMenu() {
     setLoading(true);
     setError("");
     try {
-      setMenuItems(await fetchMenu());
+      const data = await getMenu();
+      setMenuItems(data.items);
+      setCategoryList(data.categories.map((c) => c.name)); // café's order
     } catch (err) {
       setError(err.message);
     } finally {
@@ -35,7 +38,7 @@ function Menu() {
   }, []);
 
   /* ----- calculated values ----- */
-  const categories = ["All", ...new Set(menuItems.map((item) => item.category))];
+  const categories = ["All", ...categoryList];
   const query = search.trim().toLowerCase();
 
   const filteredItems = menuItems.filter((item) => {
@@ -43,7 +46,8 @@ function Menu() {
     const matchesVeg = !vegOnly || item.isVeg;
     const matchesSearch =
       item.name.toLowerCase().includes(query) ||
-      item.cuisine.toLowerCase().includes(query);
+      item.description.toLowerCase().includes(query) ||
+      item.category.toLowerCase().includes(query);
     return matchesCategory && matchesVeg && matchesSearch;
   });
 
@@ -53,7 +57,8 @@ function Menu() {
   } else if (sortBy === "price-high") {
     filteredItems.sort((a, b) => b.price - a.price);
   } else {
-    filteredItems.sort((a, b) => b.rating - a.rating);
+    // recommended: popular dishes first, then the café's menu order
+    filteredItems.sort((a, b) => Number(b.isPopular) - Number(a.isPopular));
   }
 
   function countFor(cat) {
@@ -65,7 +70,7 @@ function Menu() {
     setSearch("");
     setCategory("All");
     setVegOnly(false);
-    setSortBy("rating");
+    setSortBy("recommended");
   }
 
   return (
@@ -75,7 +80,7 @@ function Menu() {
           <p className="eyebrow">Fresh every day</p>
           <h1>Our Menu</h1>
           <p className="menu-subtitle">
-            Dishes from around the world, made fresh in our Lakeside kitchen.
+            Nepali favourites and café classics, made fresh in our Lakeside kitchen.
           </p>
         </header>
 
@@ -94,7 +99,7 @@ function Menu() {
             <input
               id="menu-search"
               type="search"
-              placeholder="Search momo, biryani, ramen..."
+              placeholder="Search momo, thukpa, latte..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -113,7 +118,7 @@ function Menu() {
                 onChange={(e) => setVegOnly(e.target.checked)}
               />
               <span className="switch" aria-hidden="true"></span>
-              Veg only
+              <span className="veg-label">Veg only</span>
             </label>
 
             <label htmlFor="sort" className="sr-only">
@@ -125,7 +130,7 @@ function Menu() {
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
             >
-              <option value="rating">Highest rated</option>
+              <option value="recommended">Recommended</option>
               <option value="price-low">Price: low to high</option>
               <option value="price-high">Price: high to low</option>
             </select>

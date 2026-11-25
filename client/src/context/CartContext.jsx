@@ -6,7 +6,8 @@ export const FREE_DELIVERY_MIN = 1000;
 export const DELIVERY_FEE = 100;
 export const MAX_QUANTITY = 20;
 
-const STORAGE_KEY = "pokhara-bites-cart";
+// v2: dishes now come from the database with new IDs, so old saved carts are ignored
+const STORAGE_KEY = "pokhara-bites-cart-v2";
 
 const CartContext = createContext(null);
 
