@@ -3,6 +3,7 @@ const express = require("express");
 const authRoutes = require("./modules/auth/auth.routes");
 const adminRoutes = require("./modules/admin/admin.routes");
 const reservationRoutes = require("./modules/reservations/reservation.routes");
+const menuRoutes = require("./modules/menu/menu.routes");
 
 const router = express.Router();
 
@@ -19,5 +20,6 @@ router.get("/health", async (req, res) => {
 router.use("/auth", authRoutes); // /api/auth/...
 router.use("/admin", adminRoutes); // /api/admin/...
 router.use("/reservations", reservationRoutes); // /api/reservations/...
+router.use("/menu", menuRoutes); // /api/menu/...
 
 module.exports = router;
