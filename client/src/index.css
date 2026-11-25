@@ -1,4 +1,8 @@
 @import "./styles/tokens.css";
+@import "./styles/components/controls.css";
+@import "./styles/components/food-card.css";
+@import "./styles/pages/menu.css";
+@import "./styles/pages/dish-details.css";
 
 /* ========== RESET ========== */
 *,

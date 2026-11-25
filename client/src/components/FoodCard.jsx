@@ -1,7 +1,7 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Star } from "lucide-react";
 import { formatPrice } from "../utils/formatPrice";
-import { Link } from "react-router-dom";
 
 function FoodCard({ item, onAddToCart }) {
   const [added, setAdded] = useState(false);
@@ -14,8 +14,8 @@ function FoodCard({ item, onAddToCart }) {
 
   return (
     <article className="food-card">
-      <Link to={`/menu/${item.id}`} className="food-image"> 
-        <img src={item.image} alt={item.name} loading="lazy" />
+      <Link to={`/menu/${item.id}`} className="food-image" tabIndex={-1} aria-hidden="true">
+        <img src={item.image} alt="" loading="lazy" />
 
         {item.isPopular && (
           <span className="badge-popular">
@@ -25,28 +25,18 @@ function FoodCard({ item, onAddToCart }) {
         )}
 
         {/* green = veg, red = non-veg */}
-        <span
-          className={`veg-mark ${item.isVeg ? "veg" : "non-veg"}`}
-          title={item.isVeg ? "Vegetarian" : "Non-vegetarian"}
-        >
-          <span className="sr-only">
-            {item.isVeg ? "Vegetarian" : "Non-vegetarian"}
-          </span>
-        </span>
+        <span className={`veg-mark ${item.isVeg ? "veg" : "non-veg"}`}></span>
       </Link>
 
       <div className="food-body">
-        <p className="food-meta">
-          <span>{item.cuisine}</span>
-          <span className="food-rating">
-            <Star size={12} fill="currentColor" aria-hidden="true" />
-            {item.rating}
-          </span>
+        <p className="food-category">
+          {item.category}
+          <span className="sr-only">, {item.isVeg ? "vegetarian" : "non-vegetarian"}</span>
         </p>
 
-        <div className="food-title-row">
-          <h3>{item.name}</h3>
-        </div>
+        <h3>
+          <Link to={`/menu/${item.id}`}>{item.name}</Link>
+        </h3>
 
         <p className="food-desc">{item.description}</p>
 

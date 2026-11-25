@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { Star, Clock, Flame, Users, ChefHat, ArrowLeft } from "lucide-react";
+import { ArrowLeft, Star } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import { formatPrice } from "../utils/formatPrice";
-import { fetchDish } from "../api/menu.api";
+import { getDish } from "../api/menu.api";
 
 function DishDetails() {
-  const { id } = useParams(); // "/menu/11" → "11"
+  const { id } = useParams(); // "/menu/4" → "4"
   const { addToCart } = useCart();
 
   const [dish, setDish] = useState(null);
@@ -21,8 +21,8 @@ function DishDetails() {
       setLoading(true);
       setError("");
       try {
-        const result = await fetchDish(id);
-        if (!ignore) setDish(result);
+        const data = await getDish(id);
+        if (!ignore) setDish(data.item);
       } catch (err) {
         if (!ignore) setError(err.message);
       } finally {
@@ -59,33 +59,14 @@ function DishDetails() {
     return (
       <section className="page container">
         <div className="menu-status">
-          <h1>Dish Not Found</h1>
+          <h1>Dish not found</h1>
           <p>{error}</p>
           <Link to="/menu" className="btn btn-primary">
-            Back to Menu
+            Back to menu
           </Link>
         </div>
       </section>
     );
-  }
-
-  /* ----- QUICK FACTS (only the ones we have) ----- */
-  const facts = [];
-  if (dish.prepTimeMinutes) {
-    facts.push({
-      Icon: Clock,
-      label: "Total time",
-      value: `${dish.prepTimeMinutes + (dish.cookTimeMinutes || 0)} min`,
-    });
-  }
-  if (dish.servings) {
-    facts.push({ Icon: Users, label: "Serves", value: dish.servings });
-  }
-  if (dish.caloriesPerServing) {
-    facts.push({ Icon: Flame, label: "Calories", value: `${dish.caloriesPerServing} kcal` });
-  }
-  if (dish.difficulty) {
-    facts.push({ Icon: ChefHat, label: "Difficulty", value: dish.difficulty });
   }
 
   return (
@@ -98,58 +79,44 @@ function DishDetails() {
       <div className="dish-top">
         <img src={dish.image} alt={dish.name} className="dish-photo" />
 
-        <div>
-          <p className="dish-meta">
-            <span>{dish.cuisine}</span>
-            <span className="dish-rating">
-              <Star size={12} fill="currentColor" aria-hidden="true" />
-              {dish.rating}
-              {dish.reviewCount ? ` (${dish.reviewCount})` : ""}
+        <div className="dish-info">
+          <div className="dish-tags">
+            <span className="dish-tag category">{dish.category}</span>
+            <span className={`dish-tag ${dish.isVeg ? "veg" : "non-veg"}`}>
+              {dish.isVeg ? "Vegetarian" : "Non-vegetarian"}
             </span>
-          </p>
-
-          <div className="dish-title-row">
-            <h1>{dish.name}</h1>
-            <span
-              className={`veg-mark ${dish.isVeg ? "veg" : "non-veg"}`}
-              title={dish.isVeg ? "Vegetarian" : "Non-vegetarian"}
-            >
-              <span className="sr-only">{dish.isVeg ? "Vegetarian" : "Non-vegetarian"}</span>
-            </span>
+            {dish.isPopular && (
+              <span className="dish-tag popular">
+                <Star size={12} fill="currentColor" aria-hidden="true" />
+                Popular
+              </span>
+            )}
           </div>
 
+          <h1>{dish.name}</h1>
           <p className="dish-description">{dish.description}</p>
 
-          {facts.length > 0 && (
-            <div className="fact-grid">
-              {facts.map(({ Icon, label, value }) => (
-                <div key={label} className="fact-card">
-                  <Icon size={18} aria-hidden="true" />
-                  <p className="fact-label">{label}</p>
-                  <p className="fact-value">{value}</p>
-                </div>
-              ))}
-            </div>
-          )}
-
           <div className="dish-buy">
-            <span className="dish-price">{formatPrice(dish.price)}</span>
+            <div>
+              <p className="dish-price-label">Price</p>
+              <p className="dish-price">{formatPrice(dish.price)}</p>
+            </div>
             <button
               className={`btn btn-primary dish-add ${added ? "added" : ""}`}
               onClick={handleAdd}
             >
-              {added ? "Added to cart ✓" : "+ Add to Cart"}
+              {added ? "Added to cart ✓" : "+ Add to cart"}
             </button>
           </div>
         </div>
       </div>
 
-      {dish.ingredients?.length > 0 && (
+      {dish.ingredients.length > 0 && (
         <div className="dish-bottom">
           <h2>What's inside</h2>
           <p className="dish-note">
             We list our ingredients so you can check for allergies and dietary
-            needs. Our recipes and cooking methods stay in our kitchen.
+            needs. Ask our staff if you have any questions.
           </p>
           <ul className="ingredient-list">
             {dish.ingredients.map((ingredient) => (
